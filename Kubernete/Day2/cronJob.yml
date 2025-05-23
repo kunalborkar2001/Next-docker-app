@@ -1,0 +1,21 @@
+kind: CronJob
+apiVersion: batch/v1
+metadata:
+  name: nginx-cronjob
+  namespace: nginx
+  labels:
+    app: nginx
+spec:
+  schedule: "*/1 * * * *" # Every minute
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: nginx
+        spec:
+          containers:
+            - name: nginx-container
+              image: busybox
+              command: ["sh", "-c", "echo Hello from nginx cronjob"]  # Command to be executed in the container
+          restartPolicy: Never

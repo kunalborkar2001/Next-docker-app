@@ -1,0 +1,15 @@
+kind: Pod
+apiVersion: v1
+metadata: 
+  name: init-container
+
+spec:
+  initContainers:
+    - name: init-myservice
+      image: busybox
+      command: ['sh', '-c', "echo 'The app is running!'; sleep 60; echo 'The app is running!'"]
+
+  containers:
+    - name: main-container
+      image: busybox
+      command: ['sh', '-c', "echo 'Main Container Started!'"]

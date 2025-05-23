@@ -1,0 +1,46 @@
+kind: StatefulSet
+apiVersion: apps/v1
+metadata:
+  name: nginx-statefulset
+  namespace: mysql
+  labels:
+    app: my-sql
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: my-sql
+  template:
+    metadata:
+      labels:
+        app: my-sql
+    spec:
+      containers:
+      - name: mysql
+        image: mysql:8.0
+        ports: 
+        - containerPort: 3306
+          protocol: TCP
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: root
+        
+        - name: MYSQL_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: mysql-config-map
+              key: MYSQL_Database
+        volumeMounts:
+        - name: mysql-storage
+          mountPath: /var/lib/mysql
+  # This is the volume claim template for the StatefulSet
+  # It will create a PersistentVolumeClaim for each replica
+  # with the name <statefulset-name>-<replica-index>
+  volumeClaimTemplates:
+  - metadata:
+      name: mysql-storage
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 1Gi

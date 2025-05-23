@@ -1,0 +1,9 @@
+kind: DevOpsBatch
+apiVersion: trainwithkunal.com/v1
+metadata:
+  name: kunal-batch-1
+spec:
+  name: Kunal's DevOps Batch
+  duration: 3 months
+  mode: online
+  platform: AWS

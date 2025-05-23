@@ -1,0 +1,21 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: mysql-service
+  namespace: mysql
+spec:
+  clusterIP: None
+  selector:
+    app: my-sql
+  ports:
+  - name: mysql
+    port: 3306
+    targetPort: 3306
+    protocol: TCP
+  # This is the headless service for the StatefulSet
+  # It will create a DNS entry for each replica
+  # with the name <statefulset-name>-<replica-index>.<service-name>
+  # This allows the StatefulSet to be accessed by its DNS name
+  # instead of its IP address
+  # This is useful for StatefulSets because they have stable network identities
+  # and persistent storage
